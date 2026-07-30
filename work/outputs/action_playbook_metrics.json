@@ -1,0 +1,36 @@
+{
+  "random_state": 42,
+  "n_rows": 30000,
+  "n_clients": 32,
+  "n_test_clients": 6,
+  "base_decline_rate": 0.542,
+  "held_out_precision_at_50": 0.88,
+  "held_out_roc_auc": 0.762,
+  "archetype_counts": {
+    "model_only_risk": 12868,
+    "low_priority": 11115,
+    "confirmed_ctr_gap": 4345,
+    "rule_only_gap": 1672
+  },
+  "archetype_observed_decline_rate": {
+    "confirmed_ctr_gap": 0.773,
+    "model_only_risk": 0.705,
+    "rule_only_gap": 0.359,
+    "low_priority": 0.291
+  },
+  "action_counts": {
+    "flag_for_decay_review": 12868,
+    "monitor": 11115,
+    "refresh_and_review_ctr": 4345,
+    "review_ctr_and_meta": 1672
+  },
+  "top_reason_codes": {
+    "model_decline_risk": 17213,
+    "low_visibility": 11248,
+    "weak_ctr_for_position": 6017,
+    "not_flagged": 5071,
+    "no_position_data": 1205
+  },
+  "top50_decline_rate_held_out": 0.88,
+  "top50_decline_rate_in_sample": 1.0
+}
