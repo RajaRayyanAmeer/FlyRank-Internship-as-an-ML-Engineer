@@ -1,11 +1,8 @@
 from __future__ import annotations
-
 import subprocess
 import sys
 from pathlib import Path
-
 from ml_utils import OUTPUT_DIR, RAW_PATH, ROOT, read_json
-
 
 STEPS = [
     ("01_prepare_features.py", "Prepare features — clean the data, build the feature vector, define the label"),
@@ -15,11 +12,9 @@ STEPS = [
     ("05_build_pdf_report.py", "Report — a shareable PDF summary"),
 ]
 
-
 def run_step(index: int, script: str, label: str) -> None:
     print(f"\n{'=' * 70}\n▶ Step {index}/{len(STEPS)} — {label}\n{'=' * 70}", flush=True)
     subprocess.run([sys.executable, str(ROOT / "scripts" / script)], cwd=ROOT, check=True)
-
 
 def main() -> None:
     if not RAW_PATH.exists():
@@ -42,7 +37,6 @@ def main() -> None:
         print(f"Queue: {summary['queue_output']}")
         print(f"Report: {summary['report_output']}")
         print(f"PDF: {OUTPUT_DIR / 'flyrank_refresh_model_results.pdf'}")
-
 
 if __name__ == "__main__":
     main()

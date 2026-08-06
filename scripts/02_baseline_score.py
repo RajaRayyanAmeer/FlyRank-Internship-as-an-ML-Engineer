@@ -1,24 +1,18 @@
 from __future__ import annotations
-
 import argparse
 from pathlib import Path
-
 import numpy as np
 import pandas as pd
-
 from ml_utils import PROCESSED_DIR, normalize, percentile_rank, write_json
-
 
 FEATURE_PATH = PROCESSED_DIR / "refresh_feature_vector.csv"
 OUTPUT_PATH = PROCESSED_DIR / "baseline_refresh_queue.csv"
-
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build deterministic refresh baseline score.")
     parser.add_argument("--input", default=str(FEATURE_PATH))
     parser.add_argument("--output", default=str(OUTPUT_PATH))
     return parser.parse_args()
-
 
 def reason_codes(row: pd.Series) -> list[str]:
     reasons: list[str] = []
@@ -40,7 +34,6 @@ def reason_codes(row: pd.Series) -> list[str]:
     if not reasons:
         reasons.append("general_refresh_review")
     return reasons
-
 
 def suggested_action(row: pd.Series) -> str:
     reasons = set(str(row["reason_codes"]).split("|"))
@@ -124,7 +117,6 @@ def main() -> None:
 
     print(f"Wrote baseline queue: {output_path}")
     print(f"Top-50 declining rate (full data, not the evaluated holdout Precision@50): {out.head(50)['is_declining_label'].mean():.3f}")
-
 
 if __name__ == "__main__":
     main()

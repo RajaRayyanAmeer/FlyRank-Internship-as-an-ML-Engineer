@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 import csv
 import json
 from collections import Counter
@@ -20,7 +19,6 @@ from reportlab.platypus import (
     Table,
     TableStyle,
 )
-
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = ROOT / "outputs"
@@ -51,7 +49,6 @@ LIGHT_BG = colors.HexColor("#F6F4F7")
 LIGHT_TEAL = colors.HexColor("#EEF6F5")
 LIGHT_BLUE = colors.HexColor("#EEF3FA")
 LINE = colors.HexColor("#D9DEE2")
-
 
 class HorizontalBarChart(Flowable):
     def __init__(
@@ -89,7 +86,6 @@ class HorizontalBarChart(Flowable):
     def draw(self) -> None:
         canvas = self.canv
         canvas.saveState()
-
         canvas.setFillColor(BRAND_DARK)
         canvas.setFont("Helvetica-Bold", 13)
         canvas.drawString(0, self.height - 15, self.title)
@@ -124,16 +120,14 @@ class HorizontalBarChart(Flowable):
             canvas.setFillColor(BRAND_TEXT)
             canvas.setFont("Helvetica", 8.5)
             canvas.drawRightString(label_width - 8, y + row_height * 0.31, label)
-
             canvas.setFillColor(colors.HexColor("#E9EDF0"))
             canvas.roundRect(chart_x, y, chart_width, row_height, 4, fill=1, stroke=0)
-
             bar_width = chart_width * (raw_value / max_value)
             canvas.setFillColor(self.color_palette[index % len(self.color_palette)])
             canvas.roundRect(chart_x, y, bar_width, row_height, 4, fill=1, stroke=0)
-
             canvas.setFillColor(BRAND_TEXT)
             canvas.setFont("Helvetica-Bold", 8.5)
+
             canvas.drawString(
                 chart_x + bar_width + 7,
                 y + row_height * 0.31,
@@ -142,35 +136,27 @@ class HorizontalBarChart(Flowable):
 
         canvas.restoreState()
 
-
 def load_json(path: Path) -> dict:
     return json.loads(path.read_text())
-
 
 def load_queue_rows(path: Path) -> list[dict[str, str]]:
     with path.open(newline="") as handle:
         return list(csv.DictReader(handle))
 
-
 def format_int(value: object) -> str:
     return f"{int(float(value)):,}"
-
 
 def format_float(value: object, digits: int = 3) -> str:
     return f"{float(value):.{digits}f}"
 
-
 def format_score(value: object) -> str:
     return f"{float(value):.1f}"
-
 
 def pct_metric(value: object) -> str:
     return f"{float(value):.3f}"
 
-
 def chunks(items: list, chunk_size: int) -> list[list]:
     return [items[index : index + chunk_size] for index in range(0, len(items), chunk_size)]
-
 
 def make_styles() -> dict[str, ParagraphStyle]:
     sample = getSampleStyleSheet()
@@ -251,7 +237,6 @@ def make_styles() -> dict[str, ParagraphStyle]:
         ),
     }
 
-
 def card_grid(
     cards: list[tuple[str, str, str]],
     styles: dict[str, ParagraphStyle],
@@ -300,7 +285,6 @@ def card_grid(
         ),
     )
 
-
 def styled_table(
     data: list[list[object]],
     *,
@@ -333,7 +317,6 @@ def styled_table(
     table.setStyle(TableStyle(commands))
     return table
 
-
 def model_metric_rows(results: dict) -> list[list[str]]:
     rows = [["Model", "ROC AUC", "Avg precision", "Precision@50", "Recall", "F1"]]
     for name, metrics in results["models"].items():
@@ -360,7 +343,6 @@ def model_metric_rows(results: dict) -> list[list[str]]:
     )
     return rows
 
-
 def reason_counts(rows: list[dict[str, str]]) -> Counter:
     counter: Counter = Counter()
     for row in rows:
@@ -369,7 +351,6 @@ def reason_counts(rows: list[dict[str, str]]) -> Counter:
                 counter[reason] += 1
     return counter
 
-
 def action_label(action: str) -> str:
     return {
         "refresh_and_review_ctr": "refresh + CTR",
@@ -377,10 +358,8 @@ def action_label(action: str) -> str:
         "expand_and_refresh": "expand + refresh",
     }.get(action, action)
 
-
 def readable_reasons(reason_codes: str) -> str:
     return reason_codes.replace("_", " ").replace("|", ", ")
-
 
 def footer(canvas, doc) -> None:
     canvas.saveState()
@@ -398,13 +377,11 @@ def footer(canvas, doc) -> None:
     )
     canvas.restoreState()
 
-
 def build_pdf() -> None:
     summary = load_json(SUMMARY_PATH)
     results = load_json(MODEL_RESULTS_PATH)
     queue_rows = load_queue_rows(QUEUE_PATH)
     styles = make_styles()
-
     action_counter = Counter(row["suggested_action"] for row in queue_rows)
     confidence_counter = Counter(row["confidence"] for row in queue_rows)
     reason_counter = reason_counts(queue_rows)

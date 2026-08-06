@@ -1,8 +1,6 @@
 from __future__ import annotations
-
 import argparse
 from pathlib import Path
-
 import numpy as np
 import pandas as pd
 
@@ -20,7 +18,6 @@ from ml_utils import (
     write_json,
 )
 
-
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Prepare FlyRank refresh feature vector.")
     parser.add_argument("--input", default=str(RAW_PATH), help="Raw anonymized CSV export.")
@@ -30,7 +27,6 @@ def parse_args() -> argparse.Namespace:
         help="Prepared feature-vector CSV.",
     )
     return parser.parse_args()
-
 
 def main() -> None:
     args = parse_args()
@@ -142,4 +138,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

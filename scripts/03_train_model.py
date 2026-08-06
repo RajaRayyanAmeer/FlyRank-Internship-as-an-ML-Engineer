@@ -1,8 +1,6 @@
 from __future__ import annotations
-
 import argparse
 from pathlib import Path
-
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
@@ -19,7 +17,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.tree import DecisionTreeClassifier
-
 from ml_utils import (
     MODEL_CATEGORICAL_FEATURES,
     MODEL_NUMERIC_FEATURES,
@@ -30,13 +27,11 @@ from ml_utils import (
     write_json,
 )
 
-
 FEATURE_PATH = PROCESSED_DIR / "refresh_feature_vector.csv"
 BASELINE_PATH = PROCESSED_DIR / "baseline_refresh_queue.csv"
 PREDICTION_PATH = PROCESSED_DIR / "model_predictions.csv"
 RESULT_PATH = OUTPUT_DIR / "model_results.json"
 RANDOM_STATE = 42
-
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Train refresh opportunity models.")
@@ -45,7 +40,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--predictions", default=str(PREDICTION_PATH))
     parser.add_argument("--results", default=str(RESULT_PATH))
     return parser.parse_args()
-
 
 def build_feature_matrix(frame: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
     numeric_features = [
@@ -71,7 +65,6 @@ def build_feature_matrix(frame: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
         axis=1,
     )
     return feature_frame, list(feature_frame.columns)
-
 
 def make_client_aware_split(
     frame: pd.DataFrame,
@@ -106,7 +99,6 @@ def make_client_aware_split(
     )
     return np.array(train_indices), np.array(test_indices), "stratified_row_holdout"
 
-
 def build_models() -> dict[str, object]:
     return {
         "logistic_regression": Pipeline(
@@ -138,13 +130,11 @@ def build_models() -> dict[str, object]:
         ),
     }
 
-
 def predict_probability(model: object, feature_frame: pd.DataFrame) -> np.ndarray:
     if not hasattr(model, "predict_proba"):
         raise TypeError(f"Model does not expose predict_proba: {type(model)!r}")
     probabilities = model.predict_proba(feature_frame)
     return np.asarray(probabilities[:, 1], dtype=float)
-
 
 def metric_payload(
     target_series: pd.Series,
@@ -176,7 +166,6 @@ def metric_payload(
         payload[f"{prefix}average_precision"] = 0.0
     return payload
 
-
 def top_feature_importance(
     model: object,
     feature_columns: list[str],
@@ -202,7 +191,6 @@ def top_feature_importance(
         {"feature": str(row.feature), "importance": float(row.importance)}
         for row in importance_frame.itertuples(index=False)
     ]
-
 
 def main() -> None:
     args = parse_args()
@@ -295,7 +283,6 @@ def main() -> None:
     print(f"Best model: {best_model_name}")
     print(f"Wrote predictions: {prediction_path}")
     print(f"Wrote model results: {args.results}")
-
 
 if __name__ == "__main__":
     main()

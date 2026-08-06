@@ -1,10 +1,7 @@
 from __future__ import annotations
-
 import argparse
 from pathlib import Path
-
 import pandas as pd
-
 from ml_utils import (
     CHART_DIR,
     OUTPUT_DIR,
@@ -16,7 +13,6 @@ from ml_utils import (
     write_json,
 )
 
-
 FEATURE_PATH = PROCESSED_DIR / "refresh_feature_vector.csv"
 BASELINE_PATH = PROCESSED_DIR / "baseline_refresh_queue.csv"
 PREDICTION_PATH = PROCESSED_DIR / "model_predictions.csv"
@@ -24,7 +20,6 @@ MODEL_RESULT_PATH = OUTPUT_DIR / "model_results.json"
 QUEUE_PATH = OUTPUT_DIR / "refresh_queue.csv"
 REPORT_PATH = OUTPUT_DIR / "model_report.md"
 SUMMARY_PATH = OUTPUT_DIR / "summary.json"
-
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Create final refresh queue and report.")
@@ -35,7 +30,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--queue", default=str(QUEUE_PATH))
     parser.add_argument("--report", default=str(REPORT_PATH))
     return parser.parse_args()
-
 
 def merged_reason_codes(row: pd.Series) -> str:
     reasons = [
@@ -67,7 +61,6 @@ def merged_reason_codes(row: pd.Series) -> str:
             unique_reasons.append(reason)
     return "|".join(unique_reasons or ["general_refresh_review"])
 
-
 def suggested_action(row: pd.Series) -> str:
     reasons = set(str(row["final_reason_codes"]).split("|"))
     if "thin_visible_page" in reasons:
@@ -89,7 +82,6 @@ def suggested_action(row: pd.Series) -> str:
         return "refresh"
     return "monitor"
 
-
 def confidence_label(row: pd.Series, high_threshold: float, medium_threshold: float) -> str:
     if (
         row["final_refresh_score"] >= high_threshold
@@ -101,7 +93,6 @@ def confidence_label(row: pd.Series, high_threshold: float, medium_threshold: fl
     if row["final_refresh_score"] >= medium_threshold:
         return "medium"
     return "low"
-
 
 def metric_table(model_results: dict) -> str:
     lines = [
@@ -138,7 +129,6 @@ def metric_table(model_results: dict) -> str:
         + " |"
     )
     return "\n".join(lines)
-
 
 def make_charts(final_frame: pd.DataFrame, model_results: dict) -> None:
     action_counts = final_frame["suggested_action"].value_counts().head(10)
@@ -199,7 +189,6 @@ def make_charts(final_frame: pd.DataFrame, model_results: dict) -> None:
         color="#B07AA1",
     )
 
-
 def write_report(final_frame: pd.DataFrame, model_results: dict, report_path: Path) -> None:
     top_features = model_results["best_model"]["feature_importance_top"][:10]
     action_counts = final_frame["suggested_action"].value_counts()
@@ -230,7 +219,6 @@ This report is generated from the bundled anonymized starter dataset (`data/raw/
 The model ranks existing content for refresh review. It does not use titles, URLs, client names, domains, or keywords.
 
 ## Data
-
 - Rows scored: {len(final_frame):,}
 - Declining-label rows: {int(final_frame["is_declining_label"].sum()):,}
 - Declining-label rate: {final_frame["is_declining_label"].mean():.3f}
@@ -238,20 +226,16 @@ The model ranks existing content for refresh review. It does not use titles, URL
 - Target: `{model_results["target"]}`
 
 ## Model Comparison
-
 Best model: `{model_results["best_model"]["name"]}` selected by `{model_results["best_model"]["selection_metric"]}`.
-
 {metric_table(model_results)}
 
 ## Final Queue
-
 - High-confidence items: {int(confidence_counts.get("high", 0)):,}
 - Medium-confidence items: {int(confidence_counts.get("medium", 0)):,}
 - Low-confidence items: {int(confidence_counts.get("low", 0)):,}
 {action_lines}
 
 ## Top Features
-
 """
     for feature in top_features:
         report += f"- `{feature['feature']}`: {feature['importance']:.4f}\n"
@@ -261,7 +245,6 @@ Best model: `{model_results["best_model"]["name"]}` selected by `{model_results[
     report += """
 
 ## Generated Files
-
 - `outputs/refresh_queue.csv`
 - `outputs/model_results.json`
 - `outputs/summary.json`
@@ -272,7 +255,6 @@ Best model: `{model_results["best_model"]["name"]}` selected by `{model_results[
 - `outputs/charts/trend_distribution.svg`
 
 ## Practical Use
-
 Use the ranked queue as a reviewer aid, not as an automatic publishing decision.
 The safest first production use is to inspect high-confidence rows, verify the page manually, and compare the recommendation against editorial context.
 """
