@@ -4,7 +4,6 @@ This report is generated from the bundled anonymized starter dataset (`data/raw/
 The model ranks existing content for refresh review. It does not use titles, URLs, client names, domains, or keywords.
 
 ## Data
-
 - Rows scored: 30,000
 - Declining-label rows: 16,262
 - Declining-label rate: 0.542
@@ -12,9 +11,7 @@ The model ranks existing content for refresh review. It does not use titles, URL
 - Target: `is_declining_label`
 
 ## Model Comparison
-
 Best model: `random_forest` selected by `precision_at_50`.
-
 | Model | ROC AUC | Avg precision | Precision@50 | Recall | F1 |
 |---|---:|---:|---:|---:|---:|
 | decision_tree | 0.742 | 0.575 | 0.540 | 0.716 | 0.634 |
@@ -23,7 +20,6 @@ Best model: `random_forest` selected by `precision_at_50`.
 | baseline_rules | 0.627 | 0.468 | 0.240 | - | - |
 
 ## Final Queue
-
 - High-confidence items: 3,602
 - Medium-confidence items: 11,398
 - Low-confidence items: 15,000
@@ -34,7 +30,6 @@ Best model: `random_forest` selected by `precision_at_50`.
 - `expand_and_refresh` items: 82
 
 ## Top Features
-
 - `days_with_impressions`: 0.1581
 - `log_impressions_90d`: 0.1286
 - `avg_position`: 0.1092
@@ -62,7 +57,6 @@ Best model: `random_forest` selected by `precision_at_50`.
 | 10 | 80.4 | 0.845 | refresh | declining_with_demand, model_decline_risk, visible_model_opportunity | 3867 | 5 | down |
 
 ## Generated Files
-
 - `outputs/refresh_queue.csv`
 - `outputs/model_results.json`
 - `outputs/summary.json`
@@ -73,6 +67,5 @@ Best model: `random_forest` selected by `precision_at_50`.
 - `outputs/charts/trend_distribution.svg`
 
 ## Practical Use
-
 Use the ranked queue as a reviewer aid, not as an automatic publishing decision.
 The safest first production use is to inspect high-confidence rows, verify the page manually, and compare the recommendation against editorial context.
