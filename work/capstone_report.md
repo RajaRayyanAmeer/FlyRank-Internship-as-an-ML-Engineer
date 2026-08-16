@@ -1,11 +1,11 @@
-# Capstone Report — Refresh / Content Opportunity Scoring
+# Capstone Report — Refresh and Content Opportunity Scoring
 
 - **Author:** Raja Rayyan Ameer
-- **Lane:** Refresh / Content Opportunity Scoring
+- **Lane:** Refresh and Content Opportunity Scoring
 - **Repo:** https://github.com/RajaRayyanAmeer/FlyRank-Internship-as-an-ML-Engineer
 - **Date:** 2026-08-16
 
-## 1. Problem framing
+## 1. Problem Framing
 
 **Unit of analysis:** one row = one content item (page), identified by pseudonymous
 `content_id`. **Output:** a ranked score (0–100) plus reason codes and a suggested action
@@ -19,7 +19,7 @@ all, a ranked, explainable shortlist turns an unbounded backlog into a tractable
 and a learned model captures interaction effects (e.g. position × CTR × freshness together)
 that a single hand-rule can't.
 
-## 2. Data safety
+## 2. Data Safety
 
 Used only `content_refresh_anonymized.csv` (30,000 rows, 32 pseudonymized clients). Excluded
 by the release itself: client names, domains, URLs, titles, keywords, raw queries,
@@ -37,7 +37,7 @@ of an observable signal. It's a fair comparison because it's evaluated on the **
 client-holdout split and the same metric** as every model. Baseline Precision@50 = **0.240**
 (ROC AUC 0.627, avg. precision 0.468).
 
-## 4. Model / analysis
+## 4. Model / Analysis
 
 Three classifiers compared: logistic regression, decision tree, random forest — chosen because
 this is a binary classification/ranking problem (declining vs. not) where tree ensembles
@@ -62,14 +62,14 @@ against this; a naive "always predict declining" rule would already score high o
 accuracy, which is why Precision@50 and lift-over-baseline (not accuracy alone) are the
 reported metrics.
 
-| Model | ROC AUC | Avg. precision | Precision@50 |
+| Model | ROC AUC | Avg. Precision | Precision@50 |
 |---|---:|---:|---:|
 | baseline_rules | 0.627 | 0.468 | 0.240 |
 | logistic_regression | 0.700 | 0.522 | 0.400 |
 | decision_tree | 0.742 | 0.575 | 0.540 |
 | random_forest | 0.750 | 0.618 | **0.740** |
 
-**Error analysis:** random forest's ROC AUC (0.750) is only modestly above the baseline's
+**Error analysis:** Random Forest's ROC AUC (0.750) is only modestly above the baseline's
 (0.627), but Precision@50 shows a much larger gap (0.740 vs 0.240) — the model is specifically
 better at getting the *top-ranked* items right, which is what the reviewer actually consumes,
 more than it is better at overall discrimination across the full population.
