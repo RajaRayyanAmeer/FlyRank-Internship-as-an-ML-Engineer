@@ -81,8 +81,7 @@ baseline on the same held-out clients. Top contributing features were `days_with
 audit's finding that position-adjusted, visibility-weighted signals carry more information than
 any single flag alone.
 
-*(Charts: `outputs/charts/action_mix.svg`, `confidence_mix.svg`, `top_feature_importance.svg`,
-`trend_distribution.svg`, embedded on the deployed page.)*
+*(Charts: `trend_distribution.svg`, `top_feature_importance.svg`, `outputs/charts/action_mix.svg`, `confidence_mix.svg`, `top_reason_codes.svg`)*
 
 ![Trend direction distribution](charts/trend_distribution.svg)
 ![Top feature importance](charts/top_feature_importance.svg)
