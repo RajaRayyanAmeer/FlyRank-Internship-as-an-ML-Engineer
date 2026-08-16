@@ -1,5 +1,7 @@
 # Refresh and Content Opportunity Scoring: Ranking Existing Pages for Review
 
+*By Raja Rayyan Ameer — FlyRank ML Internship, 2026*
+
 ## Abstract
 
 Content teams managing large page inventories need a repeatable way to decide which pages to
