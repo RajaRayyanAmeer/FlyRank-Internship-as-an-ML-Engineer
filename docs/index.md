@@ -1,3 +1,7 @@
+---
+title: Refresh and Content Opportunity Scoring
+---
+
 # Refresh and Content Opportunity Scoring: Ranking Existing Pages for Review
 
 *By Raja Rayyan Ameer — FlyRank ML Internship, 2026*
@@ -117,7 +121,7 @@ any single flag alone.
   (unmodified, run via `scripts/run_all.py`)
 - Capstone notebooks: `work/notebooks/w01_research_question.ipynb` through
   `w07_action_playbook.ipynb`, `w04_signal_audit.ipynb`, and `capstone.ipynb`
-- Repository: https://github.com/RajaRayyanAmeer/FlyRank-Internship-as-an-ML-Engineer
+- Repository: [https://github.com/RajaRayyanAmeer/FlyRank-Internship-as-an-ML-Engineer](https://github.com/RajaRayyanAmeer/FlyRank-Internship-as-an-ML-Engineer)
 
 ## Acknowledgments & Data Credit
 
