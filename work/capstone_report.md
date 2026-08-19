@@ -5,6 +5,17 @@
 - **Repo:** https://github.com/RajaRayyanAmeer/FlyRank-Internship-as-an-ML-Engineer
 - **Date:** 2026-08-16
 
+## Abstract
+
+Content teams managing large page inventories need a repeatable way to decide which pages to
+review first. This project asks whether a learned model can rank existing content for refresh
+review better than a transparent hand-written rule. Using an anonymized 30,000-page slice of
+FlyRank search-performance data, we engineered features from observable search and engagement
+signals, built a baseline scoring rule, and trained three classifiers under a client-holdout
+validation split. A random forest model reached Precision@50 of 0.740 versus the baseline
+rule's 0.240, a roughly 3x lift on the same held-out clients. The result supports using the
+model as a reviewer aid for weekly refresh triage, not as an automated publishing decision.
+
 ## 1. Problem Framing
 
 **Unit of analysis:** one row = one content item (page), identified by pseudonymous
